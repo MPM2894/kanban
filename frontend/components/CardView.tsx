@@ -33,10 +33,11 @@ export function AddCardForm({ columnId, onAdd }: AddCardFormProps) {
       <button
         type="button"
         data-testid={`add-card-${columnId}`}
+        aria-label="Add card"
         onClick={() => setOpen(true)}
-        className="mt-3 w-full rounded-xl border border-white/50 bg-white/40 px-3 py-2 text-center text-sm font-medium text-navy backdrop-blur-sm transition hover:border-accent/60 hover:bg-white/60"
+        className="mt-3 w-full rounded-xl border border-white/50 bg-white/40 py-2 text-center text-base font-medium text-navy backdrop-blur-sm transition hover:border-accent/60 hover:bg-white/60"
       >
-        + Add card
+        +
       </button>
     );
   }
