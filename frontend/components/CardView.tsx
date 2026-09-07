@@ -34,7 +34,7 @@ export function AddCardForm({ columnId, onAdd }: AddCardFormProps) {
         type="button"
         data-testid={`add-card-${columnId}`}
         onClick={() => setOpen(true)}
-        className="mt-3 w-full rounded-xl border border-white/50 bg-white/40 px-3 py-2 text-left text-sm font-medium text-navy backdrop-blur-sm transition hover:border-accent/60 hover:bg-white/60"
+        className="mt-3 w-full rounded-xl border border-white/50 bg-white/40 px-3 py-2 text-center text-sm font-medium text-navy backdrop-blur-sm transition hover:border-accent/60 hover:bg-white/60"
       >
         + Add card
       </button>
@@ -110,7 +110,7 @@ export function CardView({
       ref={setNodeRef}
       style={style}
       data-testid={`card-${card.id}`}
-      className={`rounded-2xl border border-white/60 bg-white/85 p-3 shadow-md backdrop-blur-md transition ${
+      className={`group rounded-2xl border border-white/60 bg-white/85 p-3 shadow-md backdrop-blur-md transition ${
         isDragging ? "opacity-40" : "hover:border-accent/50 hover:shadow-lg"
       }`}
       {...attributes}
@@ -126,9 +126,21 @@ export function CardView({
           aria-label={`Delete ${card.title}`}
           onPointerDown={(event) => event.stopPropagation()}
           onClick={() => onDelete(card.id)}
-          className="shrink-0 rounded-md px-1.5 py-0.5 text-xs font-medium text-muted transition hover:bg-navy/5 hover:text-navy"
+          className="shrink-0 rounded-md p-1 text-red-500 opacity-0 transition hover:bg-red-50 hover:text-red-600 focus-visible:opacity-100 group-hover:opacity-100"
         >
-          Delete
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="size-4"
+            aria-hidden="true"
+          >
+            <path
+              fillRule="evenodd"
+              d="M8.75 1a.75.75 0 0 0-.75.75V3H4.5a.75.75 0 0 0 0 1.5h.324l.7 10.15A2.25 2.25 0 0 0 7.77 16.75h4.46a2.25 2.25 0 0 0 2.246-2.1l.7-10.15h.324a.75.75 0 0 0 0-1.5H12v-1.25a.75.75 0 0 0-.75-.75h-2.5ZM10 6a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-1.5 0v-6.5A.75.75 0 0 1 10 6Zm-2.25.75a.75.75 0 0 0-1.5 0v6.5a.75.75 0 0 0 1.5 0v-6.5Zm5 0a.75.75 0 0 0-1.5 0v6.5a.75.75 0 0 0 1.5 0v-6.5Z"
+              clipRule="evenodd"
+            />
+          </svg>
         </button>
       </div>
       {card.details ? (
