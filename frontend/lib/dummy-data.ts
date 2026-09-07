@@ -4,7 +4,7 @@ export const initialBoard: BoardData = {
   columns: [
     {
       id: "col-backlog",
-      title: "Backlog",
+      title: "📥 Backlog",
       cards: [
         {
           id: "card-brand",
@@ -20,7 +20,7 @@ export const initialBoard: BoardData = {
     },
     {
       id: "col-todo",
-      title: "To Do",
+      title: "📝 To Do",
       cards: [
         {
           id: "card-design",
@@ -36,7 +36,7 @@ export const initialBoard: BoardData = {
     },
     {
       id: "col-progress",
-      title: "In Progress",
+      title: "🌊 In Progress",
       cards: [
         {
           id: "card-dnd",
@@ -47,7 +47,7 @@ export const initialBoard: BoardData = {
     },
     {
       id: "col-review",
-      title: "Review",
+      title: "👀 Review",
       cards: [
         {
           id: "card-a11y",
@@ -58,7 +58,7 @@ export const initialBoard: BoardData = {
     },
     {
       id: "col-done",
-      title: "Done",
+      title: "✅ Done",
       cards: [
         {
           id: "card-scaffold",

@@ -16,9 +16,21 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ColumnView } from "@/components/ColumnView";
 import { CardView } from "@/components/CardView";
 import { addCard, deleteCard, moveCard, renameColumn } from "@/lib/board";
-import { initialBoard } from "@/lib/dummy-data";
+import type { BoardData } from "@/lib/types";
 
-export function Board() {
+async function persistBoard(next: BoardData) {
+  try {
+    await fetch("/api/board", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(next),
+    });
+  } catch {
+    // best-effort sync; the board still updates locally
+  }
+}
+
+export function Board({ initialBoard }: { initialBoard: BoardData }) {
   const [board, setBoard] = useState(initialBoard);
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -31,6 +43,11 @@ export function Board() {
     ? board.columns.flatMap((column) => column.cards).find((card) => card.id === activeId)
     : undefined;
 
+  function update(next: BoardData) {
+    setBoard(next);
+    void persistBoard(next);
+  }
+
   function handleDragStart(event: DragStartEvent) {
     setActiveId(String(event.active.id));
   }
@@ -41,22 +58,22 @@ export function Board() {
     if (!over) {
       return;
     }
-    setBoard((current) => moveCard(current, String(active.id), String(over.id)));
+    update(moveCard(board, String(active.id), String(over.id)));
   }
 
   return (
     <div className="flex min-h-full flex-col" data-testid="board">
-      <header className="border-b border-navy/8 bg-white">
-        <div className="h-1 bg-accent" />
+      <header className="border-b border-white/25 bg-white/35 shadow-sm backdrop-blur-xl">
+        <div className="h-1 bg-accent/80" />
         <div className="px-6 py-5">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
             Project board
           </p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight text-navy">
-            Kanban
+            🧘 Kanban
           </h1>
-          <p className="mt-1 text-sm text-muted">
-            One board. Five columns. Move work from idea to done.
+          <p className="mt-1 text-sm text-navy/70">
+            One board, five columns, and a calm place to move work from idea to done.
           </p>
         </div>
       </header>
@@ -74,16 +91,12 @@ export function Board() {
               key={column.id}
               column={column}
               onRename={(columnId, title) =>
-                setBoard((current) => renameColumn(current, columnId, title))
+                update(renameColumn(board, columnId, title))
               }
               onAddCard={(columnId, title, details) =>
-                setBoard((current) =>
-                  addCard(current, columnId, title, details, crypto.randomUUID()),
-                )
+                update(addCard(board, columnId, title, details, crypto.randomUUID()))
               }
-              onDeleteCard={(cardId) =>
-                setBoard((current) => deleteCard(current, cardId))
-              }
+              onDeleteCard={(cardId) => update(deleteCard(board, cardId))}
             />
           ))}
         </div>

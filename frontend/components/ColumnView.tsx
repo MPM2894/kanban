@@ -27,15 +27,15 @@ export function ColumnView({
     <section
       ref={setNodeRef}
       data-testid={`column-${column.id}`}
-      className="flex w-72 shrink-0 flex-col rounded-2xl border border-navy/8 bg-white/80 p-3 shadow-sm backdrop-blur-sm md:w-auto md:flex-1"
+      className="flex w-72 shrink-0 flex-col rounded-3xl border border-white/40 bg-white/30 p-3 shadow-lg backdrop-blur-2xl transition-colors md:w-auto md:flex-1"
     >
-      <div className="mb-3 flex items-center gap-2 border-b border-accent/80 pb-3">
+      <div className="mb-3 flex items-center gap-2 border-b border-white/40 pb-3">
         <ColumnTitle
           columnId={column.id}
           title={column.title}
           onRename={onRename}
         />
-        <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+        <span className="ml-auto rounded-full bg-white/50 px-2 py-0.5 text-xs font-medium text-primary backdrop-blur-sm">
           {column.cards.length}
         </span>
       </div>

@@ -1,5 +1,7 @@
 import { Board } from "@/components/Board";
+import { getBoard } from "@/lib/store";
 
-export default function Home() {
-  return <Board />;
+export default async function Home() {
+  const board = await getBoard();
+  return <Board initialBoard={board} />;
 }

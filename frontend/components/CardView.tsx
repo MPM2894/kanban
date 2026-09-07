@@ -34,9 +34,9 @@ export function AddCardForm({ columnId, onAdd }: AddCardFormProps) {
         type="button"
         data-testid={`add-card-${columnId}`}
         onClick={() => setOpen(true)}
-        className="mt-3 w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-primary transition hover:bg-primary/10"
+        className="mt-3 w-full rounded-xl border border-white/50 bg-white/40 px-3 py-2 text-left text-sm font-medium text-navy backdrop-blur-sm transition hover:border-accent/60 hover:bg-white/60"
       >
-        Add card
+        + Add card
       </button>
     );
   }
@@ -56,7 +56,7 @@ export function AddCardForm({ columnId, onAdd }: AddCardFormProps) {
         value={title}
         onChange={(event) => setTitle(event.target.value)}
         placeholder="Title"
-        className="w-full rounded-lg border border-navy/10 bg-white px-3 py-2 text-sm text-navy outline-none ring-accent focus:ring-2"
+        className="w-full rounded-xl border border-navy/10 bg-white px-3 py-2 text-sm text-navy outline-none ring-accent focus:ring-2"
       />
       <textarea
         data-testid={`add-card-details-${columnId}`}
@@ -110,8 +110,8 @@ export function CardView({
       ref={setNodeRef}
       style={style}
       data-testid={`card-${card.id}`}
-      className={`rounded-xl border border-navy/8 bg-white p-3 shadow-sm transition ${
-        isDragging ? "opacity-40" : "hover:border-accent/50 hover:shadow-md"
+      className={`rounded-2xl border border-white/60 bg-white/85 p-3 shadow-md backdrop-blur-md transition ${
+        isDragging ? "opacity-40" : "hover:border-accent/50 hover:shadow-lg"
       }`}
       {...attributes}
       {...listeners}

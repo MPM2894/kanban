@@ -1,16 +1,25 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Board } from "@/components/Board";
+import { initialBoard } from "@/lib/dummy-data";
+
+beforeEach(() => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn().mockResolvedValue(new Response(JSON.stringify({ ok: true }))),
+  );
+});
 
 afterEach(() => {
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
 describe("Board", () => {
   it("renders dummy column titles and cards", () => {
-    render(<Board />);
-    expect(screen.getByRole("heading", { name: "Kanban" })).toBeInTheDocument();
+    render(<Board initialBoard={initialBoard} />);
+    expect(screen.getByRole("heading", { name: /kanban/i })).toBeInTheDocument();
     expect(screen.getByTestId("column-title-col-backlog")).toHaveTextContent(
       "Backlog",
     );
@@ -19,7 +28,7 @@ describe("Board", () => {
 
   it("renames a column", async () => {
     const user = userEvent.setup();
-    render(<Board />);
+    render(<Board initialBoard={initialBoard} />);
     await user.click(screen.getByTestId("column-title-col-todo"));
     const input = screen.getByTestId("column-title-input-col-todo");
     await user.clear(input);
@@ -33,7 +42,7 @@ describe("Board", () => {
     vi.spyOn(crypto, "randomUUID").mockReturnValue(
       "card-new" as ReturnType<typeof crypto.randomUUID>,
     );
-    render(<Board />);
+    render(<Board initialBoard={initialBoard} />);
     await user.click(screen.getByTestId("add-card-col-done"));
     await user.type(screen.getByTestId("add-card-title-col-done"), "Release notes");
     await user.type(
@@ -49,7 +58,7 @@ describe("Board", () => {
 
   it("deletes a card", async () => {
     const user = userEvent.setup();
-    render(<Board />);
+    render(<Board initialBoard={initialBoard} />);
     await user.click(screen.getByTestId("delete-card-card-scaffold"));
     expect(screen.queryByTestId("card-card-scaffold")).not.toBeInTheDocument();
   });

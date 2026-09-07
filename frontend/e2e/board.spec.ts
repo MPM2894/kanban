@@ -2,9 +2,9 @@ import { expect, test } from "@playwright/test";
 
 test("loads dummy columns and cards", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Kanban" })).toBeVisible();
-  await expect(page.getByTestId("column-title-col-backlog")).toHaveText("Backlog");
-  await expect(page.getByTestId("column-title-col-done")).toHaveText("Done");
+  await expect(page.getByRole("heading", { name: /kanban/i })).toBeVisible();
+  await expect(page.getByTestId("column-title-col-backlog")).toHaveText("📥 Backlog");
+  await expect(page.getByTestId("column-title-col-done")).toHaveText("✅ Done");
   await expect(page.getByText("Ship drag and drop")).toBeVisible();
 });
 

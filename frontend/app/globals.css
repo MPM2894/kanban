@@ -13,14 +13,32 @@
   --color-secondary: #753991;
   --color-navy: #032147;
   --color-muted: #888888;
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(180deg, rgba(9, 32, 56, 0.35) 0%, rgba(9, 32, 56, 0.12) 30%, rgba(9, 32, 56, 0.28) 100%),
+    url("/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+@media (max-width: 768px) {
+  .scene {
+    background-attachment: scroll;
+  }
 }
 
 button,

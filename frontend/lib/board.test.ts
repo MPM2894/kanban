@@ -12,11 +12,11 @@ describe("dummy board", () => {
   it("has five named columns with cards", () => {
     expect(initialBoard.columns).toHaveLength(5);
     expect(initialBoard.columns.map((column) => column.title)).toEqual([
-      "Backlog",
-      "To Do",
-      "In Progress",
-      "Review",
-      "Done",
+      "📥 Backlog",
+      "📝 To Do",
+      "🌊 In Progress",
+      "👀 Review",
+      "✅ Done",
     ]);
     expect(
       initialBoard.columns.every((column) => column.cards.length >= 1),
@@ -28,7 +28,7 @@ describe("board actions", () => {
   it("renames a column", () => {
     const next = renameColumn(initialBoard, "col-todo", "Ready");
     expect(next.columns[1].title).toBe("Ready");
-    expect(initialBoard.columns[1].title).toBe("To Do");
+    expect(initialBoard.columns[1].title).toBe("📝 To Do");
   });
 
   it("adds a card to a column", () => {
