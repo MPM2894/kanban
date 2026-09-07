@@ -111,7 +111,7 @@ export function CardView({
       ref={setNodeRef}
       style={style}
       data-testid={`card-${card.id}`}
-      className={`group rounded-2xl border border-white/60 bg-white/85 p-3 shadow-md backdrop-blur-md transition ${
+      className={`group touch-none rounded-2xl border border-white/60 bg-white/85 p-3 shadow-md backdrop-blur-md transition ${
         isDragging ? "opacity-40" : "hover:border-accent/50 hover:shadow-lg"
       }`}
       {...attributes}
