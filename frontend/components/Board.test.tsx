@@ -56,6 +56,25 @@ describe("Board", () => {
     );
   });
 
+  it("edits a card's title and details", async () => {
+    const user = userEvent.setup();
+    render(<Board initialBoard={initialBoard} />);
+    await user.click(screen.getByTestId("edit-card-card-scaffold"));
+    const titleInput = screen.getByTestId("edit-card-title-card-scaffold");
+    await user.clear(titleInput);
+    await user.type(titleInput, "Scaffold the app");
+    const detailsInput = screen.getByTestId("edit-card-details-card-scaffold");
+    await user.clear(detailsInput);
+    await user.type(detailsInput, "Done in v1.");
+    await user.click(screen.getByTestId("edit-card-save-card-scaffold"));
+    expect(screen.getByTestId("card-card-scaffold")).toHaveTextContent(
+      "Scaffold the app",
+    );
+    expect(screen.getByTestId("card-card-scaffold")).toHaveTextContent(
+      "Done in v1.",
+    );
+  });
+
   it("deletes a card", async () => {
     const user = userEvent.setup();
     render(<Board initialBoard={initialBoard} />);

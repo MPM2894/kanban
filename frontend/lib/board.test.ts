@@ -3,6 +3,7 @@ import { initialBoard } from "@/lib/dummy-data";
 import {
   addCard,
   deleteCard,
+  editCard,
   findCardLocation,
   moveCard,
   renameColumn,
@@ -44,6 +45,23 @@ describe("board actions", () => {
       title: "QA pass",
       details: "Click through add and delete",
     });
+  });
+
+  it("edits a card's title and details", () => {
+    const next = editCard(
+      initialBoard,
+      "card-brand",
+      "Define product positioning v2",
+      "Updated pitch",
+    );
+    expect(next.columns[0].cards[0]).toEqual({
+      id: "card-brand",
+      title: "Define product positioning v2",
+      details: "Updated pitch",
+    });
+    expect(initialBoard.columns[0].cards[0].title).toBe(
+      "Define product positioning",
+    );
   });
 
   it("deletes a card", () => {

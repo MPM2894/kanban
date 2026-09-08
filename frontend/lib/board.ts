@@ -29,6 +29,22 @@ export function addCard(
   };
 }
 
+export function editCard(
+  board: BoardData,
+  cardId: string,
+  title: string,
+  details: string,
+): BoardData {
+  return {
+    columns: board.columns.map((column) => ({
+      ...column,
+      cards: column.cards.map((card) =>
+        card.id === cardId ? { ...card, title, details } : card,
+      ),
+    })),
+  };
+}
+
 export function deleteCard(board: BoardData, cardId: string): BoardData {
   return {
     columns: board.columns.map((column) => ({

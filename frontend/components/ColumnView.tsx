@@ -12,6 +12,7 @@ type ColumnViewProps = {
   onRename: (columnId: string, title: string) => void;
   onAddCard: (columnId: string, title: string, details: string) => void;
   onDeleteCard: (cardId: string) => void;
+  onEditCard: (cardId: string, title: string, details: string) => void;
 };
 
 export function ColumnView({
@@ -19,6 +20,7 @@ export function ColumnView({
   onRename,
   onAddCard,
   onDeleteCard,
+  onEditCard,
 }: ColumnViewProps) {
   const { setNodeRef } = useDroppable({ id: column.id });
   const cardIds = column.cards.map((card) => card.id);
@@ -42,7 +44,12 @@ export function ColumnView({
       <div className="flex min-h-24 flex-1 flex-col gap-2">
         <SortableContext items={cardIds} strategy={verticalListSortingStrategy}>
           {column.cards.map((card) => (
-            <SortableCard key={card.id} card={card} onDelete={onDeleteCard} />
+            <SortableCard
+              key={card.id}
+              card={card}
+              onDelete={onDeleteCard}
+              onEdit={onEditCard}
+            />
           ))}
         </SortableContext>
       </div>
@@ -111,9 +118,11 @@ function ColumnTitle({
 function SortableCard({
   card,
   onDelete,
+  onEdit,
 }: {
   card: Column["cards"][number];
   onDelete: (cardId: string) => void;
+  onEdit: (cardId: string, title: string, details: string) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: card.id });
@@ -132,6 +141,7 @@ function SortableCard({
       style={style}
       isDragging={isDragging}
       onDelete={onDelete}
+      onEdit={onEdit}
     />
   );
 }

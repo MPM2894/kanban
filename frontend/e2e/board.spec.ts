@@ -30,6 +30,20 @@ test("adds and deletes a card", async ({ page }) => {
   await expect(page.getByText("Check keyboard flows")).toHaveCount(0);
 });
 
+test("edits a card's title and details", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("edit-card-card-scaffold").click();
+  const titleInput = page.getByTestId("edit-card-title-card-scaffold");
+  await titleInput.fill("Scaffold the app");
+  const detailsInput = page.getByTestId("edit-card-details-card-scaffold");
+  await detailsInput.fill("Done in v1.");
+  await page.getByTestId("edit-card-save-card-scaffold").click();
+
+  const card = page.getByTestId("card-card-scaffold");
+  await expect(card).toContainText("Scaffold the app");
+  await expect(card).toContainText("Done in v1.");
+});
+
 test("drags a card to another column", async ({ page }) => {
   await page.goto("/");
   const card = page.getByTestId("card-card-dnd");

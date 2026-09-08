@@ -16,7 +16,7 @@ import {
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ColumnView } from "@/components/ColumnView";
 import { CardView } from "@/components/CardView";
-import { addCard, deleteCard, moveCard, renameColumn } from "@/lib/board";
+import { addCard, deleteCard, editCard, moveCard, renameColumn } from "@/lib/board";
 import type { BoardData } from "@/lib/types";
 
 async function persistBoard(next: BoardData) {
@@ -99,12 +99,19 @@ export function Board({ initialBoard }: { initialBoard: BoardData }) {
                 update(addCard(board, columnId, title, details, crypto.randomUUID()))
               }
               onDeleteCard={(cardId) => update(deleteCard(board, cardId))}
+              onEditCard={(cardId, title, details) =>
+                update(editCard(board, cardId, title, details))
+              }
             />
           ))}
         </div>
         <DragOverlay>
           {activeCard ? (
-            <CardView card={activeCard} onDelete={() => undefined} />
+            <CardView
+              card={activeCard}
+              onDelete={() => undefined}
+              onEdit={() => undefined}
+            />
           ) : null}
         </DragOverlay>
       </DndContext>
