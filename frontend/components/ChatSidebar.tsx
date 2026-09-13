@@ -60,7 +60,7 @@ export function ChatSidebar({ board, onBoardUpdate }: ChatSidebarProps) {
   return (
     <aside
       data-testid="chat-sidebar"
-      className="flex w-full shrink-0 flex-col gap-3 rounded-3xl border border-white/40 bg-white/30 p-4 shadow-lg backdrop-blur-2xl md:w-80"
+      className="flex h-72 w-full shrink-0 flex-col gap-3 rounded-3xl border border-white/40 bg-white/30 p-4 shadow-lg backdrop-blur-2xl md:h-auto md:w-80"
     >
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">

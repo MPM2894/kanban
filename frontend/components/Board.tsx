@@ -80,7 +80,7 @@ export function Board({ initialBoard }: { initialBoard: BoardData }) {
           </p>
         </div>
       </header>
-      <div className="flex flex-1 gap-4 overflow-hidden px-6 py-6">
+      <div className="flex flex-1 flex-col gap-4 overflow-hidden px-6 py-6 md:flex-row">
         <DndContext
           id="kanban-board"
           sensors={sensors}
