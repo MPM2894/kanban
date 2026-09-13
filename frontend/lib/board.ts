@@ -64,6 +64,14 @@ export function findCardLocation(board: BoardData, cardId: string) {
   return null;
 }
 
+export function columnExists(board: BoardData, columnId: string): boolean {
+  return board.columns.some((column) => column.id === columnId);
+}
+
+export function cardExists(board: BoardData, cardId: string): boolean {
+  return findCardLocation(board, cardId) !== null;
+}
+
 function arrayMove<T>(items: T[], from: number, to: number): T[] {
   const next = [...items];
   const [item] = next.splice(from, 1);
@@ -71,45 +79,28 @@ function arrayMove<T>(items: T[], from: number, to: number): T[] {
   return next;
 }
 
-export function moveCard(
+function relocateCard(
   board: BoardData,
   cardId: string,
-  overId: string,
+  toColumnId: string,
+  toIndex: number,
 ): BoardData {
   const from = findCardLocation(board, cardId);
   if (!from) {
     return board;
   }
 
-  const overColumn = board.columns.find((column) => column.id === overId);
-  const overCard = findCardLocation(board, overId);
-
-  let toColumnId: string;
-  let toIndex: number;
-
-  if (overColumn) {
-    toColumnId = overColumn.id;
-    toIndex =
-      from.columnId === overColumn.id
-        ? overColumn.cards.length - 1
-        : overColumn.cards.length;
-  } else if (overCard) {
-    toColumnId = overCard.columnId;
-    toIndex = overCard.index;
-  } else {
-    return board;
-  }
-
-  if (from.columnId === toColumnId && from.index === toIndex) {
-    return board;
-  }
-
   if (from.columnId === toColumnId) {
+    const column = board.columns.find((c) => c.id === from.columnId)!;
+    const clamped = Math.max(0, Math.min(toIndex, column.cards.length - 1));
+    if (from.index === clamped) {
+      return board;
+    }
     return {
-      columns: board.columns.map((column) =>
-        column.id === from.columnId
-          ? { ...column, cards: arrayMove(column.cards, from.index, toIndex) }
-          : column,
+      columns: board.columns.map((c) =>
+        c.id === from.columnId
+          ? { ...c, cards: arrayMove(c.cards, from.index, clamped) }
+          : c,
       ),
     };
   }
@@ -142,4 +133,45 @@ export function moveCard(
       return { ...column, cards };
     }),
   };
+}
+
+export function moveCard(
+  board: BoardData,
+  cardId: string,
+  overId: string,
+): BoardData {
+  const from = findCardLocation(board, cardId);
+  if (!from) {
+    return board;
+  }
+
+  const overColumn = board.columns.find((column) => column.id === overId);
+  const overCard = findCardLocation(board, overId);
+
+  let toColumnId: string;
+  let toIndex: number;
+
+  if (overColumn) {
+    toColumnId = overColumn.id;
+    toIndex =
+      from.columnId === overColumn.id
+        ? overColumn.cards.length - 1
+        : overColumn.cards.length;
+  } else if (overCard) {
+    toColumnId = overCard.columnId;
+    toIndex = overCard.index;
+  } else {
+    return board;
+  }
+
+  return relocateCard(board, cardId, toColumnId, toIndex);
+}
+
+export function moveCardToPosition(
+  board: BoardData,
+  cardId: string,
+  toColumnId: string,
+  toIndex: number,
+): BoardData {
+  return relocateCard(board, cardId, toColumnId, toIndex);
 }

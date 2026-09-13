@@ -14,6 +14,7 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { ChatSidebar } from "@/components/ChatSidebar";
 import { ColumnView } from "@/components/ColumnView";
 import { CardView } from "@/components/CardView";
 import { addCard, deleteCard, editCard, moveCard, renameColumn } from "@/lib/board";
@@ -79,42 +80,45 @@ export function Board({ initialBoard }: { initialBoard: BoardData }) {
           </p>
         </div>
       </header>
-      <DndContext
-        id="kanban-board"
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-        onDragCancel={() => setActiveId(null)}
-      >
-        <div className="flex flex-1 gap-4 overflow-x-auto px-6 py-6">
-          {board.columns.map((column) => (
-            <ColumnView
-              key={column.id}
-              column={column}
-              onRename={(columnId, title) =>
-                update(renameColumn(board, columnId, title))
-              }
-              onAddCard={(columnId, title, details) =>
-                update(addCard(board, columnId, title, details, crypto.randomUUID()))
-              }
-              onDeleteCard={(cardId) => update(deleteCard(board, cardId))}
-              onEditCard={(cardId, title, details) =>
-                update(editCard(board, cardId, title, details))
-              }
-            />
-          ))}
-        </div>
-        <DragOverlay>
-          {activeCard ? (
-            <CardView
-              card={activeCard}
-              onDelete={() => undefined}
-              onEdit={() => undefined}
-            />
-          ) : null}
-        </DragOverlay>
-      </DndContext>
+      <div className="flex flex-1 gap-4 overflow-hidden px-6 py-6">
+        <DndContext
+          id="kanban-board"
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragCancel={() => setActiveId(null)}
+        >
+          <div className="flex min-w-0 flex-1 gap-4 overflow-x-auto">
+            {board.columns.map((column) => (
+              <ColumnView
+                key={column.id}
+                column={column}
+                onRename={(columnId, title) =>
+                  update(renameColumn(board, columnId, title))
+                }
+                onAddCard={(columnId, title, details) =>
+                  update(addCard(board, columnId, title, details, crypto.randomUUID()))
+                }
+                onDeleteCard={(cardId) => update(deleteCard(board, cardId))}
+                onEditCard={(cardId, title, details) =>
+                  update(editCard(board, cardId, title, details))
+                }
+              />
+            ))}
+          </div>
+          <DragOverlay>
+            {activeCard ? (
+              <CardView
+                card={activeCard}
+                onDelete={() => undefined}
+                onEdit={() => undefined}
+              />
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+        <ChatSidebar board={board} onBoardUpdate={update} />
+      </div>
     </div>
   );
 }

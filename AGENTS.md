@@ -41,3 +41,22 @@
 1. Use latest versions of libraries and idiomatic approaches as of today
 2. Keep it simple - NEVER over-engineer, ALWAYS simplify, NO unnecessary defensive programming. No extra features - focus on simplicity.
 3. Be concise. Keep README minimal. IMPORTANT: no emojis ever
+
+## AI chat sidebar
+
+`POST /api/chat` (`frontend/app/api/chat/route.ts`) takes `{message, history, board}`
+(the client's current in-memory board — this app has no server-side session,
+so the client is the source of truth), calls OpenRouter
+(`openai/gpt-oss-120b`, `frontend/lib/ai.ts`) with the board JSON embedded in
+the system prompt, and returns `{reply, board}` where `board` is the updated
+`BoardData` (or `null` if nothing changed). `frontend/lib/chat.ts` parses and
+validates the model's JSON response and applies any board-mutation
+operations using the same functions `components/Board.tsx` already uses
+(`addCard`/`editCard`/`deleteCard`/`moveCardToPosition`/`renameColumn` in
+`lib/board.ts`) — every referenced column/card id is checked to exist
+*before* any operation is applied, so a bad AI response can't partially
+corrupt the board. Requires `OPENROUTER_API_KEY` in `frontend/.env.local`
+(see `.env.example`). `components/ChatSidebar.tsx` is the UI; it calls the
+route with the board it currently holds and applies the returned board via
+the same `update()` callback `Board.tsx` uses for every other mutation
+(local state + best-effort persist).
